@@ -1,61 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Search, Plus, Copy, TerminalSquare } from "lucide-react";
-
-type Category = {
-  id: string;
-  name: string;
-};
-
-type StashItem = {
-  id: string;
-  title: string;
-  body: string;
-  categoryId: string;
-  tags: string[];
-};
-
-const categories: Category[] = [
-  { id: "git", name: "Git" },
-  { id: "npm", name: "NPM" },
-  { id: "mac", name: "Mac" },
-  { id: "sql", name: "SQL" },
-  { id: "urls", name: "URLs" },
-];
-
-const starterItems: StashItem[] = [
-  {
-    id: "git-status",
-    title: "Git Status",
-    body: "git status",
-    categoryId: "git",
-    tags: ["git", "status", "changes"],
-  },
-  {
-    id: "git-commit",
-    title: "Commit Changes",
-    body: 'git add . && git commit -m "message"',
-    categoryId: "git",
-    tags: ["git", "commit", "save"],
-  },
-  {
-    id: "npm-dev",
-    title: "Run Dev Server",
-    body: "npm run dev",
-    categoryId: "npm",
-    tags: ["npm", "vite", "dev"],
-  },
-  {
-    id: "show-hidden-files",
-    title: "Show Hidden Files on Mac",
-    body: "defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder",
-    categoryId: "mac",
-    tags: ["mac", "finder", "hidden"],
-  },
-];
+import { stasherConfig, type StashItem } from "./data/stasher.config";
 
 function App() {
   const [query, setQuery] = useState("");
-  const [items] = useState<StashItem[]>(starterItems);
+  const [items] = useState<StashItem[]>(stasherConfig.items);
   const searchRef = useRef<HTMLInputElement | null>(null);
 
   const filteredItems = useMemo(() => {
@@ -73,7 +22,7 @@ function App() {
   }, [items, query]);
 
   const groupedItems = useMemo(() => {
-    return categories
+    return stasherConfig.categories
       .map((category) => ({
         category,
         items: filteredItems.filter((item) => item.categoryId === category.id),
