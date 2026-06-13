@@ -216,3 +216,83 @@ h1 {
   height: 48px;
   object-fit: contain;
 }
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.manage-panel {
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.manage-note {
+  border: var(--control-border);
+  background: var(--input-bg);
+  color: var(--text);
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.35;
+  box-shadow: var(--control-shadow);
+}
+
+.manage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.manage-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.manage-card {
+  border: var(--card-border);
+  background: var(--card-bg);
+  color: var(--text);
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: var(--card-shadow);
+}
+
+.manage-card > div {
+  min-width: 0;
+  flex: 1;
+}
+
+.manage-card strong {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.manage-card code {
+  display: block;
+  color: var(--code);
+  font-size: 12px;
+  line-height: 1.35;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  opacity: 0.85;
+}
+
+.manage-card span {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+  text-align: right;
+  max-width: 160px;
+}
