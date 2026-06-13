@@ -177,6 +177,42 @@ h1 {
 }
 
 .icon-button.active {
+  background: var(--text);
+  color: var(--app-bg);
   transform: translate(2px, 2px);
   box-shadow: none;
+}
+
+.icon-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+.toast {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  z-index: 10;
+  transform: translateX(-50%);
+  border: var(--control-border);
+  background: var(--text);
+  color: var(--app-bg);
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: var(--control-shadow);
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
 }

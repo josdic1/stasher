@@ -13,6 +13,8 @@ let isPinned = false;
 const isDev = !app.isPackaged;
 
 function createWindow() {
+  isPinned = false;
+
   win = new BrowserWindow({
     width: 760,
     height: 620,
@@ -29,6 +31,8 @@ function createWindow() {
     },
   });
 
+  win.setAlwaysOnTop(false);
+
   if (isDev) {
     win.loadURL("http://localhost:5173");
   } else {
@@ -42,15 +46,22 @@ function createWindow() {
   });
 }
 
-function showWindow() {
+function syncPinState() {
   if (!win) return;
 
   win.setAlwaysOnTop(isPinned, isPinned ? "screen-saver" : "normal");
+  win.webContents.send("pin-state", isPinned);
+}
+
+function showWindow() {
+  if (!win) return;
+
+  syncPinState();
+
   win.center();
   win.show();
   win.focus();
 
-  win.webContents.send("pin-state", isPinned);
   win.webContents.send("focus-search");
 }
 
@@ -67,12 +78,7 @@ function toggleWindow() {
 
 function setPinned(nextPinned) {
   isPinned = Boolean(nextPinned);
-
-  if (win) {
-    win.setAlwaysOnTop(isPinned, isPinned ? "screen-saver" : "normal");
-    win.webContents.send("pin-state", isPinned);
-  }
-
+  syncPinState();
   return isPinned;
 }
 
