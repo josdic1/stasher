@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Search, Plus, Copy, TerminalSquare } from "lucide-react";
+import { Search, Pin, PinOff, Copy, TerminalSquare } from "lucide-react";
 import { stasherConfig, type StashItem } from "./data/stasher.config";
+
 function App() {
   const [query, setQuery] = useState("");
+  const [isPinned, setIsPinned] = useState(false);
   const [items] = useState<StashItem[]>(stasherConfig.items);
   const searchRef = useRef<HTMLInputElement | null>(null);
 
@@ -12,11 +14,16 @@ function App() {
     if (!q) return items;
 
     return items.filter((item) => {
-      const haystack = [item.title, item.body, item.categoryId, ...item.tags]
+      const searchableText = [
+        item.title,
+        item.body,
+        item.categoryId,
+        ...item.tags,
+      ]
         .join(" ")
         .toLowerCase();
 
-      return haystack.includes(q);
+      return searchableText.includes(q);
     });
   }, [items, query]);
 
@@ -44,8 +51,23 @@ function App() {
     }
   }
 
+  async function togglePinned() {
+    if (!window.stasher?.setPinned) return;
+
+    const nextPinned = await window.stasher.setPinned(!isPinned);
+    setIsPinned(nextPinned);
+  }
+
   useEffect(() => {
     searchRef.current?.focus();
+
+    if (window.stasher?.getPinned) {
+      window.stasher.getPinned().then(setIsPinned);
+    }
+
+    if (window.stasher?.onPinState) {
+      window.stasher.onPinState(setIsPinned);
+    }
 
     if (window.stasher?.onFocusSearch) {
       window.stasher.onFocusSearch(() => {
@@ -78,8 +100,13 @@ function App() {
           <h1>Find it. Copy it. Move.</h1>
         </div>
 
-        <button className="icon-button" type="button" title="Add later">
-          <Plus size={20} />
+        <button
+          className={`icon-button ${isPinned ? "active" : ""}`}
+          type="button"
+          title={isPinned ? "Unpin Stasher" : "Pin Stasher"}
+          onClick={togglePinned}
+        >
+          {isPinned ? <PinOff size={20} /> : <Pin size={20} />}
         </button>
       </section>
 
@@ -112,11 +139,7 @@ function App() {
                     type="button"
                     onClick={() => copyItem(item)}
                   >
-                    <div>
-                      <strong>{item.title}</strong>
-                      <code>{item.body}</code>
-                    </div>
-
+                    <strong>{item.title}</strong>
                     <Copy size={18} />
                   </button>
                 ))}

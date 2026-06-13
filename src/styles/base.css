@@ -1,35 +1,3 @@
-:root {
-  --font-main:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
-
-  --teal: #195057;
-  --teal-dark: #10383d;
-  --cream: #f1ecd8;
-  --gold: #d8a651;
-  --rust: #8f4632;
-  --black: #050505;
-
-  --text: var(--cream);
-  --muted: rgba(241, 236, 216, 0.62);
-  --code: var(--gold);
-
-  --app-bg: var(--teal);
-  --app-border: 0;
-  --app-shadow: none;
-
-  --control-bg: var(--cream);
-  --control-border: 2px solid var(--black);
-  --control-shadow: 4px 4px 0 var(--black);
-
-  --input-bg: var(--cream);
-
-  --card-bg: rgba(16, 56, 61, 0.72);
-  --card-hover-bg: rgba(5, 5, 5, 0.18);
-  --card-border: 2px solid rgba(241, 236, 216, 0.85);
-  --card-shadow: none;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -78,9 +46,9 @@ button {
 }
 
 .eyebrow {
-  margin: 0 0 5px;
-  color: var(--gold);
-  font-size: 11px;
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 12px;
   font-weight: 900;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -88,7 +56,7 @@ button {
 
 h1 {
   margin: 0;
-  color: var(--cream);
+  color: var(--text);
   font-size: 30px;
   line-height: 0.95;
   letter-spacing: -0.06em;
@@ -98,16 +66,11 @@ h1 {
   width: 42px;
   height: 42px;
   border: var(--control-border);
-  background: var(--cream);
-  color: var(--teal);
+  background: var(--control-bg);
+  color: var(--text);
   display: grid;
   place-items: center;
   box-shadow: var(--control-shadow);
-}
-
-.icon-button:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 5px 5px 0 var(--black);
 }
 
 .search-wrap {
@@ -117,8 +80,8 @@ h1 {
   min-height: 54px;
   padding: 0 14px;
   border: var(--control-border);
-  background: var(--cream);
-  color: var(--teal);
+  background: var(--input-bg);
+  color: var(--muted);
   box-shadow: var(--control-shadow);
 }
 
@@ -127,13 +90,13 @@ h1 {
   border: 0;
   outline: 0;
   background: transparent;
-  color: var(--teal-dark);
+  color: var(--text);
   font-size: 18px;
-  font-weight: 850;
+  font-weight: 800;
 }
 
 .search-wrap input::placeholder {
-  color: rgba(25, 80, 87, 0.55);
+  color: var(--muted);
 }
 
 .results {
@@ -152,7 +115,7 @@ h1 {
 }
 
 .category-label {
-  color: var(--gold);
+  color: var(--muted);
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.2em;
@@ -169,7 +132,7 @@ h1 {
   width: 100%;
   border: var(--card-border);
   background: var(--card-bg);
-  color: var(--cream);
+  color: var(--text);
   padding: 14px;
   display: flex;
   align-items: center;
@@ -182,20 +145,18 @@ h1 {
 .stash-card:hover {
   transform: translate(-1px, -1px);
   background: var(--card-hover-bg);
-  border-color: var(--gold);
 }
 
 .stash-card strong {
   display: block;
   margin-bottom: 6px;
-  color: var(--cream);
   font-size: 15px;
   font-weight: 900;
 }
 
 .stash-card code {
   display: block;
-  color: var(--gold);
+  color: var(--code);
   font-size: 13px;
   white-space: nowrap;
   overflow: hidden;
@@ -205,8 +166,8 @@ h1 {
 
 .empty-state {
   height: 260px;
-  border: 2px dashed rgba(241, 236, 216, 0.5);
-  background: rgba(16, 56, 61, 0.58);
+  border: var(--card-border);
+  background: var(--card-bg);
   color: var(--muted);
   display: grid;
   place-items: center;
@@ -215,14 +176,7 @@ h1 {
   font-weight: 900;
 }
 
-.results::-webkit-scrollbar {
-  width: 8px;
-}
-
-.results::-webkit-scrollbar-track {
-  background: rgba(5, 5, 5, 0.12);
-}
-
-.results::-webkit-scrollbar-thumb {
-  background: var(--gold);
+.icon-button.active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
 }

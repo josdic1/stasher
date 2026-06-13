@@ -8,6 +8,7 @@ const {
 const path = require("path");
 
 let win = null;
+let isPinned = false;
 
 const isDev = !app.isPackaged;
 
@@ -18,9 +19,9 @@ function createWindow() {
     show: false,
     frame: false,
     resizable: true,
-    alwaysOnTop: true,
+    alwaysOnTop: false,
     skipTaskbar: true,
-    backgroundColor: "#0f0f0f",
+    backgroundColor: "#fff7e8",
     webPreferences: {
       preload: path.join(__dirname, "preload.cjs"),
       contextIsolation: true,
@@ -35,8 +36,22 @@ function createWindow() {
   }
 
   win.on("blur", () => {
-    if (win) win.hide();
+    if (!isPinned && win?.isVisible()) {
+      win.hide();
+    }
   });
+}
+
+function showWindow() {
+  if (!win) return;
+
+  win.setAlwaysOnTop(isPinned, isPinned ? "screen-saver" : "normal");
+  win.center();
+  win.show();
+  win.focus();
+
+  win.webContents.send("pin-state", isPinned);
+  win.webContents.send("focus-search");
 }
 
 function toggleWindow() {
@@ -44,12 +59,21 @@ function toggleWindow() {
 
   if (win.isVisible()) {
     win.hide();
-  } else {
-    win.center();
-    win.show();
-    win.focus();
-    win.webContents.send("focus-search");
+    return;
   }
+
+  showWindow();
+}
+
+function setPinned(nextPinned) {
+  isPinned = Boolean(nextPinned);
+
+  if (win) {
+    win.setAlwaysOnTop(isPinned, isPinned ? "screen-saver" : "normal");
+    win.webContents.send("pin-state", isPinned);
+  }
+
+  return isPinned;
 }
 
 app.whenReady().then(() => {
@@ -58,12 +82,25 @@ app.whenReady().then(() => {
   globalShortcut.register("F2", toggleWindow);
 
   ipcMain.handle("hide-window", () => {
-    if (win) win.hide();
+    if (win) {
+      win.hide();
+    }
   });
 
   ipcMain.handle("copy-text", (_event, text) => {
     clipboard.writeText(text);
-    if (win) win.hide();
+
+    if (win && !isPinned) {
+      win.hide();
+    }
+  });
+
+  ipcMain.handle("get-pinned", () => {
+    return isPinned;
+  });
+
+  ipcMain.handle("set-pinned", (_event, nextPinned) => {
+    return setPinned(nextPinned);
   });
 });
 
