@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Search, Plus, Copy, TerminalSquare } from "lucide-react";
 import { stasherConfig, type StashItem } from "./data/stasher.config";
-
 function App() {
   const [query, setQuery] = useState("");
   const [items] = useState<StashItem[]>(stasherConfig.items);
